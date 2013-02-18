@@ -78,9 +78,6 @@
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:self.url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:self.timeout];
     NSString *queryString = [self queryStringFromParameters];
     NSData *queryData = [queryString dataUsingEncoding:NSUTF8StringEncoding];
-    for(NSString *HTTPHeaderField in self.HTTPHeaderFields) {
-        [request setValue:[self.HTTPHeaderFields objectForKey:HTTPHeaderField] forHTTPHeaderField:HTTPHeaderField];
-    }
     
     if(self.method == DownloadMethodGET) {
         [request setHTTPMethod:@"GET"];
@@ -110,6 +107,10 @@
         } else {
             [request setHTTPBody:queryData];
         }
+    }
+    
+    for(NSString *HTTPHeaderField in self.HTTPHeaderFields) {
+        [request setValue:[self.HTTPHeaderFields objectForKey:HTTPHeaderField] forHTTPHeaderField:HTTPHeaderField];
     }
     
     self.data = [[NSMutableData alloc] init];
