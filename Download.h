@@ -19,6 +19,9 @@ typedef enum {
 
 typedef void (^DownloadDidFinishCallback)(NSData *data, NSError *error);
 
+extern NSString *DownloadDidBeginNotification;
+extern NSString *DownloadDidEndNotification;
+
 @interface Download : NSObject
 @property (nonatomic, copy) DownloadDidFinishCallback callback;
 @property (nonatomic) DownloadMethod method;

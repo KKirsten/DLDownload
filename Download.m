@@ -7,6 +7,9 @@
 
 #import "Download.h"
 
+NSString *DownloadDidBeginNotification = @"DownloadDidBeginNotification";
+NSString *DownloadDidEndNotification = @"DownloadDidEndNotification";
+
 @interface Download() <NSURLConnectionDelegate>
 @property (nonatomic, strong) NSURLConnection *connection;
 @property (nonatomic, strong) NSMutableData *data;
@@ -113,6 +116,8 @@
         [request setValue:[self.HTTPHeaderFields objectForKey:HTTPHeaderField] forHTTPHeaderField:HTTPHeaderField];
     }
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:DownloadDidBeginNotification object:self];
+    
     self.data = [[NSMutableData alloc] init];
     self.connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
     [self.connection scheduleInRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
@@ -121,6 +126,8 @@
 
 - (void)cancel
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:DownloadDidEndNotification object:self];
+    
     self.callback = nil;
     [self.connection cancel];
     self.connection = nil;
@@ -153,6 +160,8 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:DownloadDidEndNotification object:self];
+    
     self.connection = nil;
     
     [self.data setLength:0];
@@ -161,6 +170,8 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:DownloadDidEndNotification object:self];
+    
     self.connection = nil;
     
     self.callback(self.data, nil);
