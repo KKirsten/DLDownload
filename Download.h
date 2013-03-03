@@ -17,6 +17,7 @@ typedef enum {
     DownloadMethodPATCH = 4,
 } DownloadMethod;
 
+typedef void (^DownloadDidUpdateProgressCallback)(NSUInteger bytesReceived, NSUInteger expectedLength, CGFloat percent);
 typedef void (^DownloadDidFinishCallback)(NSData *data, NSError *error);
 
 extern NSString *DownloadDidBeginNotification;
@@ -24,6 +25,7 @@ extern NSString *DownloadDidEndNotification;
 
 @interface Download : NSObject
 @property (nonatomic, copy) DownloadDidFinishCallback callback;
+@property (nonatomic, copy) DownloadDidUpdateProgressCallback updateProgressCallback;
 @property (nonatomic) DownloadMethod method;
 @property (nonatomic) NSTimeInterval timeout;
 @property (nonatomic, copy) NSURL *url;

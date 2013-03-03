@@ -11,6 +11,7 @@ NSString *DownloadDidBeginNotification = @"DownloadDidBeginNotification";
 NSString *DownloadDidEndNotification = @"DownloadDidEndNotification";
 
 @interface Download() <NSURLConnectionDelegate>
+@property (nonatomic) long long expectedContentLength;
 @property (nonatomic, strong) NSURLConnection *connection;
 @property (nonatomic, strong) NSMutableData *data;
 
@@ -150,12 +151,19 @@ NSString *DownloadDidEndNotification = @"DownloadDidEndNotification";
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
+    self.expectedContentLength = response.expectedContentLength;
     [self.data setLength:0];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
     [self.data appendData:data];
+    
+    if(self.expectedContentLength != NSURLResponseUnknownLength && self.expectedContentLength != 0) {
+        if(self.updateProgressCallback) {
+            self.updateProgressCallback(data.length, self.expectedContentLength, (CGFloat)data.length / (CGFloat)self.expectedContentLength);
+        }
+    }
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
@@ -173,6 +181,12 @@ NSString *DownloadDidEndNotification = @"DownloadDidEndNotification";
     [[NSNotificationCenter defaultCenter] postNotificationName:DownloadDidEndNotification object:self];
     
     self.connection = nil;
+    
+    if(self.expectedContentLength != NSURLResponseUnknownLength && self.expectedContentLength != 0) {
+        if(self.updateProgressCallback) {
+            self.updateProgressCallback(data.length, self.expectedContentLength, (CGFloat)data.length / (CGFloat)self.expectedContentLength);
+        }
+    }
     
     self.callback(self.data, nil);
 }
