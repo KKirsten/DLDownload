@@ -161,7 +161,7 @@ NSString *DownloadDidEndNotification = @"DownloadDidEndNotification";
     
     if(self.expectedContentLength != NSURLResponseUnknownLength && self.expectedContentLength != 0) {
         if(self.updateProgressCallback) {
-            self.updateProgressCallback(data.length, self.expectedContentLength, (CGFloat)data.length / (CGFloat)self.expectedContentLength);
+            self.updateProgressCallback(self.data.length, self.expectedContentLength, (CGFloat)self.data.length / (CGFloat)self.expectedContentLength);
         }
     }
 }
@@ -184,7 +184,7 @@ NSString *DownloadDidEndNotification = @"DownloadDidEndNotification";
     
     if(self.expectedContentLength != NSURLResponseUnknownLength && self.expectedContentLength != 0) {
         if(self.updateProgressCallback) {
-            self.updateProgressCallback(data.length, self.expectedContentLength, (CGFloat)data.length / (CGFloat)self.expectedContentLength);
+            self.updateProgressCallback(self.data.length, self.expectedContentLength, (CGFloat)self.data.length / (CGFloat)self.expectedContentLength);
         }
     }
     
