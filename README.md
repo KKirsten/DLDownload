@@ -15,12 +15,12 @@ Download *download = [[Download alloc] init];
 download.url = [NSURL URLWithString:@"http://track8.fm/api/track"];
 download.parameters = @{@"short_code":@"rA"};
 download.callback =  ^(NSData *data, NSError *error) {
-    if(!error) {
+    if(error) {
+        // handle error.
+    } else {
         NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:0];
         NSDictionary *trackData = [jsonData objectForKey:@"track"];
-        NSLog(@"%@", [trackData objectForKey:@"name"]); // returns "Ender"
-    } else {
-        // handle error.
+        NSLog(@"%@", [trackData objectForKey:@"name"]);
     }  
 };
 
@@ -35,14 +35,14 @@ HTTP methods supported include: `GET`, `POST`, `DELETE`, `PUT`, `PATCH`.
 Download *download = [[Download alloc] init];
 download.method = DownloadMethodPOST;
 download.url = [NSURL URLWithString:@"http://track8.fm/api/track"];
-download.parameters = @{@"artist":@"Finch",@"track":@"Ender"};
+download.parameters = @{@"artist":@"Finch", @"track":@"Ender"};
 download.callback =  ^(NSData *data, NSError *error) {
-    if(!error) {
+    if(error) {
+        // handle error.
+    } else {
         NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:0];
         NSDictionary *trackData = [jsonData objectForKey:@"track"];
-        NSLog(@"%@ : %@", [trackData objectForKey:@"name"], [trackData objectForKey:@"linkURL"]); // returns "Ender"
-    } else {
-        // handle error.
+        NSLog(@"%@ : %@", [trackData objectForKey:@"name"], [trackData objectForKey:@"linkURL"]);
     }
 };
 
@@ -56,15 +56,14 @@ Download *download = [[Download alloc] init];
 download.method = DownloadMethodPOST;
 download.url = [NSURL URLWithString:@"http://imgsrc.hubblesite.org/hu/db/images/hs-2006-10-a-hires_jpg.jpg"];
 download.updateProgressCallback = ^(NSUInteger bytesReceived, NSUInteger expectedLength, CGFloat percent) {
-    NSNumber *percentDownloaded =  [NSNumber numberWithFloat: percent * 100];
-    NSLog(@"%i%% Complete", [percentDownloaded intValue]);
+    NSLog(@"%i%% Complete", (int)(percent * 100);
 };
 download.callback =  ^(NSData *data, NSError *error) {
-    if(!error) {
+    if(error) {
+        // handle error.
+    } else {
         UIImage *hubbleImage = [UIImage imageWithData:data];
         self.someImageView.image = hubbleImage;
-    } else {
-        // handle error.
     }
 };
 
