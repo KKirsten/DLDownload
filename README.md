@@ -80,7 +80,7 @@ NSMutableDictionary *headerFields = @{'Authorization':authorizationHeader, @"con
 Download *download = [[Download alloc] init];
 download.HTTPHeaderFields = headerFields;
 
-// skipping additional download setup addressed above.
+// define properties and methods here.
 
 [download start];
 ```
@@ -91,7 +91,7 @@ download.HTTPHeaderFields = headerFields;
 Download *download = [[Download alloc] init];
 download.bodyData = [NSJSONSerialization dataWithJSONObject:@{@"text":@"Message to post to a social network."} options:0 error:0];
 
-// skipping additional download setup addressed above.
+// define properties and methods here.
 
 [download start];
 ```
@@ -101,7 +101,8 @@ download.bodyData = [NSJSONSerialization dataWithJSONObject:@{@"text":@"Message 
 ```objc
 Download *download = [[Download alloc] init];
 download.challengeCredential = [[NSURLCredential alloc] initWithUser:@"username" password:@"password" objectForKey:@"CloudAppPassword"] persistence:NSURLCredentialPersistenceNone];
-// skipping additional download setup addressed above.
+
+// define properties and methods here.
 
 [download start];
 ```
