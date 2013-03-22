@@ -25,10 +25,9 @@ download.callback =  ^(NSData *data, NSError *error) {
 };
 
 [download start];
-
 ```
 
-### Define HTTP Method
+### HTTP Methods
 
 HTTP methods supported include: `GET`, `POST`, `DELETE`, `PUT`, `PATCH`.
 
