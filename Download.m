@@ -141,11 +141,12 @@ NSString *DownloadDidEndNotification = @"DownloadDidEndNotification";
     if([challenge previousFailureCount] == 0 && self.credential != nil) {
         [[challenge sender] useCredential:self.credential forAuthenticationChallenge:challenge];
     } else {
-        [self cancel];
         self.callback(nil, [NSError errorWithDomain:@"DownloadErrorDomain" code:0 userInfo:@{
                          NSLocalizedDescriptionKey : @"Authentication Failed",
                   NSLocalizedFailureReasonErrorKey : @"No authentication credential was provided."
         }]);
+        
+        [self cancel];
     }
 }
 
