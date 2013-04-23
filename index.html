@@ -1,1 +1,194 @@
-DLDownload
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>DLDownload Reference</title>
+		<link rel="stylesheet" type="text/css" href="css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.1 (build 840)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="index.html">DLDownload </a></h1>
+				<a id="developerHome" href="index.html">Ender Labs</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">DLDownload Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar"></ul>
+		</header>
+		<article>
+			<div id="overview_contents" role="main">
+				<div class="main-navigation navigation-top">
+					<a href="hierarchy.html">Next</a>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">DLDownload Reference</h1>
+					</div>		
+				</div>
+				<div id="container">
+					
+					<div class="section section-overview index-overview">
+						
+						
+						<h1><a href="Classes/DLDownload.html">DLDownload</a></h1>
+
+<p><a href="Classes/DLDownload.html">DLDownload</a> is a lightweight block based wrapper around NSURLConnection.</p>
+
+<h2>Installation</h2>
+
+<ul>
+<li>Add <code>pod "DLDownload"</code> to your <a href="http://cocoapods.org">Podfile</a>, import as necessary with: <code>#import "DLDownload.h"</code>.</li>
+<li>Add <code>DLDownload.{h,m}</code> to your project, import as necessary with: <code>#import "DLDownload.h"</code>.</li>
+</ul>
+
+
+<h2>Usage</h2>
+
+<h3>Simple HTTP Call</h3>
+
+<pre><code>DLDownload *download = [[DLDownload alloc] init];
+download.url = [NSURL URLWithString:@"http://track8.fm/api/track"];
+download.parameters = @{@"short_code":@"rA"};
+download.callback =  ^(NSData *data, NSError *error) {
+    if(error) {
+        // handle error.
+    } else {
+        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:0];
+        NSDictionary *trackData = [jsonData objectForKey:@"track"];
+        NSLog(@"%@", [trackData objectForKey:@"name"]);
+    }  
+};
+
+[download start];
+</code></pre>
+
+<h3>HTTP Methods</h3>
+
+<p>HTTP methods supported include: <code>GET</code>, <code>POST</code>, <code>DELETE</code>, <code>PUT</code>, <code>PATCH</code>.</p>
+
+<pre><code>DLDownload *download = [[DLDownload alloc] init];
+download.method = DownloadMethodPOST;
+download.url = [NSURL URLWithString:@"http://track8.fm/api/track"];
+download.parameters = @{@"artist":@"Finch", @"track":@"Ender"};
+download.callback =  ^(NSData *data, NSError *error) {
+    if(error) {
+        // handle error.
+    } else {
+        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:0];
+        NSDictionary *trackData = [jsonData objectForKey:@"track"];
+        NSLog(@"%@ : %@", [trackData objectForKey:@"name"], [trackData objectForKey:@"linkURL"]);
+    }
+};
+
+[download start];
+</code></pre>
+
+<h3>Monitor Download Progress</h3>
+
+<pre><code>DLDownload *download = [[DLDownload alloc] init];
+download.method = DownloadMethodPOST;
+download.url = [NSURL URLWithString:@"http://imgsrc.hubblesite.org/hu/db/images/hs-2006-10-a-hires_jpg.jpg"];
+download.updateProgressCallback = ^(NSUInteger bytesReceived, NSUInteger expectedLength, CGFloat percent) {
+    NSLog(@"%i%% Complete", (int)(percent * 100));
+};
+download.callback =  ^(NSData *data, NSError *error) {
+    if(error) {
+        // handle error.
+    } else {
+        UIImage *hubbleImage = [UIImage imageWithData:data];
+        self.someImageView.image = hubbleImage;
+    }
+};
+
+[download start];
+</code></pre>
+
+<h3>HTTP Headers</h3>
+
+<pre><code>NSString *authorizationHeader = [NSString stringWithFormat:@"Bearer %@", @"UserServiceAccessToken"];
+NSMutableDictionary *headerFields = @{@"Authorization":authorizationHeader, @"content-type": @"application/json" };
+
+DLDownload *download = [[DLDownload alloc] init];
+download.HTTPHeaderFields = headerFields;
+
+// define properties and methods here.
+
+[download start];
+</code></pre>
+
+<h3>HTTP Body</h3>
+
+<pre><code>DLDownload *download = [[DLDownload alloc] init];
+download.bodyData = [NSJSONSerialization dataWithJSONObject:@{@"text":@"Message to post to a social network."} options:0 error:0];
+
+// define properties and methods here.
+
+[download start];
+</code></pre>
+
+<h3>HTTP Authentication Challenge</h3>
+
+<pre><code>DLDownload *download = [[DLDownload alloc] init];
+download.credential = [NSURLCredential credentialWithUser:@"username" password:@"password" persistence:NSURLCredentialPersistenceForSession];
+
+// define properties and methods here.
+
+[download start];
+</code></pre>
+
+<h2>Notifications</h2>
+
+<ul>
+<li><code>DownloadDidBeginNotification</code></li>
+<li><code>DownloadDidEndNotification</code></li>
+</ul>
+
+
+<h2>Notes</h2>
+
+<p>You do not need to encode parameters. All parameters are properly encoded by <a href="Classes/DLDownload.html">DLDownload</a> before the call is made.</p>
+
+<h2>Contributing</h2>
+
+<p>Please feel free to fork this repo and submit pull requests for any new features or fixes.</p>
+						
+						
+					</div>
+					
+                        
+                    
+					
+					
+					<div class="index-column">
+						<h2 class="index-title">Class References</h2>
+						<ul>
+							
+							<li><a href="Classes/DLDownload.html">DLDownload</a></li>
+							
+						</ul>
+					</div>
+					
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<a href="hierarchy.html">Next</a>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2013 Ender Labs. All rights reserved. (Last updated: 2013-04-23)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
+						
+	
+					</div>
+				</div>
+			</div>
+		</article>		
+	</body>
+</html>
