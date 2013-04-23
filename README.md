@@ -1,8 +1,8 @@
 # DLDownload
-Block based downloading.
+DLDownload is a lightweight block based wrapper around NSURLConnection.
 
 ## Installation
-* Add `pod "DLDownload"` to your [Podfile](http://cocoapods.org), import as necessary with: `#import DLDownload.h`.
+* Add `pod "DLDownload"` to your [Podfile](http://cocoapods.org), import as necessary with: `#import "DLDownload.h"`.
 * Add `DLDownload.{h,m}` to your project, import as necessary with: `#import "DLDownload.h"`.
 
 ## Usage
