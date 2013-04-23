@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define kDownloadStandardTimeout 10.0
+#define kDLDownloadStandardTimeout 10.0
 
 /**
  DLDownload is a lightweight wrapper around NSURLConnection.
