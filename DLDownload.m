@@ -1,16 +1,16 @@
 //
-//  Download.m
+//  DLDownload.m
 //
-//  Created by Donald Hays on 1/17/13.
-//
+//  Copyright 2013 Ender Labs. All rights reserved.
+//  Created by Donald Hays.
 //
 
-#import "Download.h"
+#import "DLDownload.h"
 
 NSString *DownloadDidBeginNotification = @"DownloadDidBeginNotification";
 NSString *DownloadDidEndNotification = @"DownloadDidEndNotification";
 
-@interface Download() <NSURLConnectionDelegate>
+@interface DLDownload() <NSURLConnectionDelegate>
 @property (nonatomic) long long expectedContentLength;
 @property (nonatomic, strong) NSURLConnection *connection;
 @property (nonatomic, strong) NSMutableData *data;
@@ -18,7 +18,7 @@ NSString *DownloadDidEndNotification = @"DownloadDidEndNotification";
 - (NSString *)queryStringFromParameters;
 @end
 
-@implementation Download
+@implementation DLDownload
 #pragma mark -
 #pragma mark Lifecycle
 - (id)init

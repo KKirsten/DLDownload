@@ -1,8 +1,8 @@
 //
-//  Download.h
+//  DLDownload.h
 //
-//  Created by Donald Hays on 1/17/13.
-//
+//  Copyright 2013 Ender Labs. All rights reserved.
+//  Created by Donald Hays.
 //
 
 #import <Foundation/Foundation.h>
@@ -23,7 +23,7 @@ typedef void (^DownloadDidFinishCallback)(NSData *data, NSError *error);
 extern NSString *DownloadDidBeginNotification;
 extern NSString *DownloadDidEndNotification;
 
-@interface Download : NSObject
+@interface DLDownload : NSObject
 @property (nonatomic, copy) DownloadDidFinishCallback callback;
 @property (nonatomic, copy) DownloadDidUpdateProgressCallback updateProgressCallback;
 @property (nonatomic) DownloadMethod method;
