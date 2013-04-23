@@ -79,7 +79,7 @@ download.callback =  ^(NSData *data, NSError *error) {
 <p>HTTP methods supported include: <code>GET</code>, <code>POST</code>, <code>DELETE</code>, <code>PUT</code>, <code>PATCH</code>.</p>
 
 <pre><code>DLDownload *download = [[DLDownload alloc] init];
-download.method = DownloadMethodPOST;
+download.method = DLDownloadMethodPOST;
 download.url = [NSURL URLWithString:@"http://track8.fm/api/track"];
 download.parameters = @{@"artist":@"Finch", @"track":@"Ender"};
 download.callback =  ^(NSData *data, NSError *error) {
@@ -98,7 +98,7 @@ download.callback =  ^(NSData *data, NSError *error) {
 <h3>Monitor Download Progress</h3>
 
 <pre><code>DLDownload *download = [[DLDownload alloc] init];
-download.method = DownloadMethodPOST;
+download.method = DLDownloadMethodPOST;
 download.url = [NSURL URLWithString:@"http://imgsrc.hubblesite.org/hu/db/images/hs-2006-10-a-hires_jpg.jpg"];
 download.updateProgressCallback = ^(NSUInteger bytesReceived, NSUInteger expectedLength, CGFloat percent) {
     NSLog(@"%i%% Complete", (int)(percent * 100));
@@ -151,8 +151,8 @@ download.credential = [NSURLCredential credentialWithUser:@"username" password:@
 <h2>Notifications</h2>
 
 <ul>
-<li><code>DownloadDidBeginNotification</code></li>
-<li><code>DownloadDidEndNotification</code></li>
+<li><code>DLDownloadDidBeginNotification</code></li>
+<li><code>DLDownloadDidEndNotification</code></li>
 </ul>
 
 
