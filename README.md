@@ -6,7 +6,7 @@ DLDownload is a lightweight block based wrapper around NSURLConnection.
 * Add `DLDownload.{h,m}` to your project, import as necessary with: `#import "DLDownload.h"`.
 
 ## Documentation
-Documentation for DLDownload can be found on [Github Pages](http://enderlabs.github.io/Download/).
+Documentation for DLDownload can be found on [Github Pages](http://enderlabs.github.io/DLDownload/).
 
 ## Contributing
 Please feel free to [fork the code](http://github.com/enderlabs/DLDownload.git), and submit pull requests for any new features or fixes.
