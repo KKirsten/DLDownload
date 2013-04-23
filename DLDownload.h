@@ -9,31 +9,80 @@
 
 #define kDownloadStandardTimeout 10.0
 
+/**
+ DLDownload is a lightweight wrapper around NSURLConnection.
+ */
+
 typedef enum {
-    DownloadMethodGET = 0,
-    DownloadMethodPOST = 1,
-    DownloadMethodDELETE = 2,
-    DownloadMethodPUT = 3,
-    DownloadMethodPATCH = 4,
-} DownloadMethod;
+    DLDownloadMethodGET = 0,
+    DLDownloadMethodPOST = 1,
+    DLDownloadMethodDELETE = 2,
+    DLDownloadMethodPUT = 3,
+    DLDownloadMethodPATCH = 4,
+} DLDownloadMethod;
 
-typedef void (^DownloadDidUpdateProgressCallback)(NSUInteger bytesReceived, NSUInteger expectedLength, CGFloat percent);
-typedef void (^DownloadDidFinishCallback)(NSData *data, NSError *error);
+typedef void (^DLDownloadDidUpdateProgressCallback)(NSUInteger bytesReceived, NSUInteger expectedLength, CGFloat percent);
+typedef void (^DLDownloadDidFinishCallback)(NSData *data, NSError *error);
 
-extern NSString *DownloadDidBeginNotification;
-extern NSString *DownloadDidEndNotification;
+extern NSString *DLDownloadDidBeginNotification;
+extern NSString *DLDownloadDidEndNotification;
 
 @interface DLDownload : NSObject
-@property (nonatomic, copy) DownloadDidFinishCallback callback;
-@property (nonatomic, copy) DownloadDidUpdateProgressCallback updateProgressCallback;
-@property (nonatomic) DownloadMethod method;
+
+/**---------------------------------------------------------------------------------------
+ * @name Request Callbacks
+ *  ---------------------------------------------------------------------------------------
+ */
+
+/** A block that is called when a download has finished. */
+@property (nonatomic, copy) DLDownloadDidFinishCallback callback;
+
+/**  A block that is called when the progress of a download has updated. */
+@property (nonatomic, copy) DLDownloadDidUpdateProgressCallback updateProgressCallback;
+
+ /**---------------------------------------------------------------------------------------
+ * @name Request Properties
+ *  ---------------------------------------------------------------------------------------
+ */
+
+ /** The request's HTTP request method. 
+
+The default method is GET.
+*/
+@property (nonatomic) DLDownloadMethod method;
+
+/** Time in seconds until the request should timeout. 
+
+The default timeout is set to 10 seconds.
+*/
 @property (nonatomic) NSTimeInterval timeout;
+
+/** The request's URL. */
 @property (nonatomic, copy) NSURL *url;
+
+/** The parameters to be sent with a request. */
 @property (nonatomic, copy) NSDictionary *parameters;
+
+/** A dictionary containing a request's HTTP header fields. */
 @property (nonatomic, copy) NSDictionary *HTTPHeaderFields;
+
+/** This data is sent as the message body of a request, as in an HTTP POST request. */
 @property (nonatomic, copy) NSData *bodyData;
+
+/** An NSURLCredential object for authenticating a request. */
 @property (nonatomic, copy) NSURLCredential *credential;
 
+/**---------------------------------------------------------------------------------------
+ * @name Creating / Canceling Requests
+ *  ---------------------------------------------------------------------------------------
+ */
+/**
+Starts the download for a given request.
+ */
 - (void)start;
+
+/**
+Cancels the download for a given URL.
+ */
 - (void)cancel;
 @end

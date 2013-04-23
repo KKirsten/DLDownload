@@ -7,8 +7,8 @@
 
 #import "DLDownload.h"
 
-NSString *DownloadDidBeginNotification = @"DownloadDidBeginNotification";
-NSString *DownloadDidEndNotification = @"DownloadDidEndNotification";
+NSString *DLDownloadDidBeginNotification = @"DLDownloadDidBeginNotification";
+NSString *DLDownloadDidEndNotification = @"DLDownloadDidEndNotification";
 
 @interface DLDownload() <NSURLConnectionDelegate>
 @property (nonatomic) long long expectedContentLength;
@@ -25,8 +25,8 @@ NSString *DownloadDidEndNotification = @"DownloadDidEndNotification";
 {
     self = [super init];
     if(self) {
-        self.method = DownloadMethodGET;
-        self.timeout = kDownloadStandardTimeout;
+        self.method = DLDownloadMethodGET;
+        self.timeout = kDLDownloadStandardTimeout;
     }
     return self;
 }
@@ -83,7 +83,7 @@ NSString *DownloadDidEndNotification = @"DownloadDidEndNotification";
     NSString *queryString = [self queryStringFromParameters];
     NSData *queryData = [queryString dataUsingEncoding:NSUTF8StringEncoding];
     
-    if(self.method == DownloadMethodGET) {
+    if(self.method == DLDownloadMethodGET) {
         [request setHTTPMethod:@"GET"];
         if(queryString.length > 0) {
             if([self.url.absoluteString rangeOfString:@"?"].location == NSNotFound) {
@@ -93,13 +93,13 @@ NSString *DownloadDidEndNotification = @"DownloadDidEndNotification";
             }
         }
     } else {
-        if(self.method == DownloadMethodPOST) {
+        if(self.method == DLDownloadMethodPOST) {
             [request setHTTPMethod:@"POST"];
-        } else if(self.method == DownloadMethodDELETE) {
+        } else if(self.method == DLDownloadMethodDELETE) {
             [request setHTTPMethod:@"DELETE"];
-        } else if(self.method == DownloadMethodPUT) {
+        } else if(self.method == DLDownloadMethodPUT) {
             [request setHTTPMethod:@"PUT"];
-        } else if(self.method == DownloadMethodPATCH) {
+        } else if(self.method == DLDownloadMethodPATCH) {
             [request setHTTPMethod:@"PATCH"];
         } else {
             [NSException raise:NSGenericException format:@"Unknown download method %i", self.method];
@@ -117,7 +117,7 @@ NSString *DownloadDidEndNotification = @"DownloadDidEndNotification";
         [request setValue:[self.HTTPHeaderFields objectForKey:HTTPHeaderField] forHTTPHeaderField:HTTPHeaderField];
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:DownloadDidBeginNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:DLDownloadDidBeginNotification object:self];
     
     self.data = [[NSMutableData alloc] init];
     self.connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
@@ -127,7 +127,7 @@ NSString *DownloadDidEndNotification = @"DownloadDidEndNotification";
 
 - (void)cancel
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:DownloadDidEndNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:DLDownloadDidEndNotification object:self];
     
     self.callback = nil;
     [self.connection cancel];
@@ -141,7 +141,7 @@ NSString *DownloadDidEndNotification = @"DownloadDidEndNotification";
     if([challenge previousFailureCount] == 0 && self.credential != nil) {
         [[challenge sender] useCredential:self.credential forAuthenticationChallenge:challenge];
     } else {
-        self.callback(nil, [NSError errorWithDomain:@"DownloadErrorDomain" code:0 userInfo:@{
+        self.callback(nil, [NSError errorWithDomain:@"DLDownloadErrorDomain" code:0 userInfo:@{
                          NSLocalizedDescriptionKey : @"Authentication Failed",
                   NSLocalizedFailureReasonErrorKey : @"No authentication credential was provided."
         }]);
@@ -169,7 +169,7 @@ NSString *DownloadDidEndNotification = @"DownloadDidEndNotification";
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:DownloadDidEndNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:DLDownloadDidEndNotification object:self];
     
     self.connection = nil;
     
@@ -179,7 +179,7 @@ NSString *DownloadDidEndNotification = @"DownloadDidEndNotification";
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:DownloadDidEndNotification object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:DLDownloadDidEndNotification object:self];
     
     self.connection = nil;
     

@@ -5,106 +5,104 @@ DLDownload is a lightweight block based wrapper around NSURLConnection.
 * Add `pod "DLDownload"` to your [Podfile](http://cocoapods.org), import as necessary with: `#import "DLDownload.h"`.
 * Add `DLDownload.{h,m}` to your project, import as necessary with: `#import "DLDownload.h"`.
 
+## Documentation
+Documentation for DLDownload can be found on [Github Pages](http://enderlabs.github.io/Download/).
+
+## Contributing
+Please feel free to [fork the code](http://github.com/enderlabs/DLDownload.git), and submit pull requests for any new features or fixes.
+
 ## Usage
 
 
 ### Simple HTTP Call
+ 
+    DLDownload *download = [[DLDownload alloc] init];
+    download.url = [NSURL URLWithString:@"http://track8.fm/api/track"];
+    download.parameters = @{@"short_code":@"rA"};
+    download.callback =  ^(NSData *data, NSError *error) {
+        if(error) {
+            // handle error.
+        } else {
+            NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:0];
+            NSDictionary *trackData = [jsonData objectForKey:@"track"];
+            NSLog(@"%@", [trackData objectForKey:@"name"]);
+        }  
+    };
 
-```objc  
-DLDownload *download = [[DLDownload alloc] init];
-download.url = [NSURL URLWithString:@"http://track8.fm/api/track"];
-download.parameters = @{@"short_code":@"rA"};
-download.callback =  ^(NSData *data, NSError *error) {
-    if(error) {
-        // handle error.
-    } else {
-        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:0];
-        NSDictionary *trackData = [jsonData objectForKey:@"track"];
-        NSLog(@"%@", [trackData objectForKey:@"name"]);
-    }  
-};
+    [download start];
 
-[download start];
-```
 
 ### HTTP Methods
 
 HTTP methods supported include: `GET`, `POST`, `DELETE`, `PUT`, `PATCH`.
 
-```objc  
-DLDownload *download = [[DLDownload alloc] init];
-download.method = DownloadMethodPOST;
-download.url = [NSURL URLWithString:@"http://track8.fm/api/track"];
-download.parameters = @{@"artist":@"Finch", @"track":@"Ender"};
-download.callback =  ^(NSData *data, NSError *error) {
-    if(error) {
-        // handle error.
-    } else {
-        NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:0];
-        NSDictionary *trackData = [jsonData objectForKey:@"track"];
-        NSLog(@"%@ : %@", [trackData objectForKey:@"name"], [trackData objectForKey:@"linkURL"]);
-    }
-};
+    DLDownload *download = [[DLDownload alloc] init];
+    download.method = DownloadMethodPOST;
+    download.url = [NSURL URLWithString:@"http://track8.fm/api/track"];
+    download.parameters = @{@"artist":@"Finch", @"track":@"Ender"};
+    download.callback =  ^(NSData *data, NSError *error) {
+        if(error) {
+            // handle error.
+        } else {
+            NSDictionary *jsonData = [NSJSONSerialization JSONObjectWithData:data options:0 error:0];
+            NSDictionary *trackData = [jsonData objectForKey:@"track"];
+            NSLog(@"%@ : %@", [trackData objectForKey:@"name"], [trackData objectForKey:@"linkURL"]);
+        }
+    };
 
-[download start];
-```
+    [download start];
+
 
 ### Monitor Download Progress
 
-```objc
-DLDownload *download = [[DLDownload alloc] init];
-download.method = DownloadMethodPOST;
-download.url = [NSURL URLWithString:@"http://imgsrc.hubblesite.org/hu/db/images/hs-2006-10-a-hires_jpg.jpg"];
-download.updateProgressCallback = ^(NSUInteger bytesReceived, NSUInteger expectedLength, CGFloat percent) {
-    NSLog(@"%i%% Complete", (int)(percent * 100));
-};
-download.callback =  ^(NSData *data, NSError *error) {
-    if(error) {
-        // handle error.
-    } else {
-        UIImage *hubbleImage = [UIImage imageWithData:data];
-        self.someImageView.image = hubbleImage;
-    }
-};
+    DLDownload *download = [[DLDownload alloc] init];
+    download.method = DownloadMethodPOST;
+    download.url = [NSURL URLWithString:@"http://imgsrc.hubblesite.org/hu/db/images/hs-2006-10-a-hires_jpg.jpg"];
+    download.updateProgressCallback = ^(NSUInteger bytesReceived, NSUInteger expectedLength, CGFloat percent) {
+        NSLog(@"%i%% Complete", (int)(percent * 100));
+    };
+    download.callback =  ^(NSData *data, NSError *error) {
+        if(error) {
+            // handle error.
+        } else {
+            UIImage *hubbleImage = [UIImage imageWithData:data];
+            self.someImageView.image = hubbleImage;
+        }
+    };
 
-[download start];
-```
+    [download start];
 
 ### HTTP Headers
 
-```objc
-NSString *authorizationHeader = [NSString stringWithFormat:@"Bearer %@", @"UserServiceAccessToken"];
-NSMutableDictionary *headerFields = @{@"Authorization":authorizationHeader, @"content-type": @"application/json" };
+    NSString *authorizationHeader = [NSString stringWithFormat:@"Bearer %@", @"UserServiceAccessToken"];
+    NSMutableDictionary *headerFields = @{@"Authorization":authorizationHeader, @"content-type": @"application/json" };
 
-DLDownload *download = [[DLDownload alloc] init];
-download.HTTPHeaderFields = headerFields;
+    DLDownload *download = [[DLDownload alloc] init];
+    download.HTTPHeaderFields = headerFields;
 
-// define properties and methods here.
+    // define properties and methods here.
 
-[download start];
-```
+    [download start];
+
 
 ### HTTP Body
 
-```objc
-DLDownload *download = [[DLDownload alloc] init];
-download.bodyData = [NSJSONSerialization dataWithJSONObject:@{@"text":@"Message to post to a social network."} options:0 error:0];
+    DLDownload *download = [[DLDownload alloc] init];
+    download.bodyData = [NSJSONSerialization dataWithJSONObject:@{@"text":@"Message to post to a social network."} options:0 error:0];
 
-// define properties and methods here.
+    // define properties and methods here.
 
-[download start];
-```
+    [download start];
 
 ### HTTP Authentication Challenge
 
-```objc
-DLDownload *download = [[DLDownload alloc] init];
-download.credential = [NSURLCredential credentialWithUser:@"username" password:@"password" persistence:NSURLCredentialPersistenceForSession];
+    DLDownload *download = [[DLDownload alloc] init];
+    download.credential = [NSURLCredential credentialWithUser:@"username" password:@"password" persistence:NSURLCredentialPersistenceForSession];
 
-// define properties and methods here.
+    // define properties and methods here.
 
-[download start];
-```
+    [download start];
+
 
 ## Notifications
 * `DownloadDidBeginNotification`
@@ -112,6 +110,3 @@ download.credential = [NSURLCredential credentialWithUser:@"username" password:@
 
 ## Notes
 You do not need to encode parameters. All parameters are properly encoded by DLDownload before the call is made.
-
-## Contributing
-Please feel free to fork this repo and submit pull requests for any new features or fixes.
