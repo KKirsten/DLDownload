@@ -74,7 +74,7 @@ download.callback =  ^(NSData *data, NSError *error) {
 
 ```objc
 NSString *authorizationHeader = [NSString stringWithFormat:@"Bearer %@", @"UserServiceAccessToken"];
-NSMutableDictionary *headerFields = @{'Authorization':authorizationHeader, @"content-type": @"application/json" };
+NSMutableDictionary *headerFields = @{@"Authorization":authorizationHeader, @"content-type": @"application/json" };
 
 Download *download = [[Download alloc] init];
 download.HTTPHeaderFields = headerFields;
