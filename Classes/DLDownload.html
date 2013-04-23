@@ -166,7 +166,17 @@
 					<div class="section section-overview">
 						<a title="Overview" name="overview"></a>
 						<h2 class="subtitle subtitle-overview">Overview</h2>
-						<p>DLDownload is a lightweight wrapper around NSURLConnection.</p>
+						<p>DLDownload is a lightweight block-based wrapper around NSURLConnection. It&rsquo;s
+optimized for convenience, allowing you to instantiate, configure, and begin
+a download, as well as write the download completion handler, all from one
+place in your code. Additionally, instances of DLDownload are &ldquo;fire and
+forget&rdquo;, you do not need to keep a reference to the instance alive in an
+owning object, unless there&rsquo;s the possibility that you will want to <a href="#//api/name/cancel">cancel</a>
+the download explicitly.</p>
+
+<p>At minimum, you must set the <a href="#//api/name/url"><code>url</code></a> and <a href="#//api/name/callback"><code>callback</code></a> properties before calling
+<a href="#//api/name/start"><code>start</code></a>. Those <a href="#//api/name/parameters">parameters</a> are enough to do a basic HTTP GET call. Additional
+<a href="#//api/name/parameters">parameters</a> can be set to further customize the call.</p>
 					</div>
 					
 					
@@ -192,7 +202,7 @@
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/updateProgressCallback">&nbsp;&nbsp;updateProgressCallback</a></code>
-		<span class="tooltip"><p>  A block that is called when the progress of a download has updated.</p></span>
+		<span class="tooltip"><p>A block that is called when the progress of a download has updated.</p></span>
 	</span>
 	<span class="task-item-suffix">property</span>
 	
@@ -207,7 +217,7 @@
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/method">&nbsp;&nbsp;method</a></code>
-		<span class="tooltip"><p>The request&rsquo;s HTTP request method.</p></span>
+		<span class="tooltip"><p>The request&rsquo;s HTTP method.</p></span>
 	</span>
 	<span class="task-item-suffix">property</span>
 	
@@ -235,14 +245,15 @@
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/HTTPHeaderFields">&nbsp;&nbsp;HTTPHeaderFields</a></code>
-		<span class="tooltip"><p>A dictionary containing a request&rsquo;s HTTP header fields.</p></span>
+		<span class="tooltip"><p>A dictionary containing HTTP header fields.</p></span>
 	</span>
 	<span class="task-item-suffix">property</span>
 	
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/bodyData">&nbsp;&nbsp;bodyData</a></code>
-		<span class="tooltip"><p>This <a href="#//api/name/data">data</a> is sent as the message body of a request, as in an HTTP POST request.</p></span>
+		<span class="tooltip"><p>This <a href="#//api/name/data">data</a> is sent as the message body of a request, as in an HTTP POST
+request.</p></span>
 	</span>
 	<span class="task-item-suffix">property</span>
 	
@@ -264,14 +275,14 @@
 							<li>
 	<span class="tooltip">
 		<code><a href="#//api/name/start">&ndash;&nbsp;start</a></code>
-		<span class="tooltip"><p>Starts the download for a given request.</p></span>
+		<span class="tooltip"><p>Starts the download.</p></span>
 	</span>
 	
 	
 </li><li>
 	<span class="tooltip">
 		<code><a href="#//api/name/cancel">&ndash;&nbsp;cancel</a></code>
-		<span class="tooltip"><p>Cancels the download for a given URL.</p></span>
+		<span class="tooltip"><p>Cancels the download.</p></span>
 	</span>
 	
 	
@@ -295,7 +306,7 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>A dictionary containing a request&rsquo;s HTTP header fields.</p>
+		<p>A dictionary containing HTTP header fields.</p>
 	</div>		
 	
     
@@ -331,7 +342,8 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>This <a href="#//api/name/data">data</a> is sent as the message body of a request, as in an HTTP POST request.</p>
+		<p>This <a href="#//api/name/data">data</a> is sent as the message body of a request, as in an HTTP POST
+request.</p>
 	</div>		
 	
     
@@ -345,6 +357,12 @@
 	
 	
 	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>If this value is non-nil, it will be sent as the body in POST, DELETE, PUT,
+and PATCH requests instead of the contents of the <a href="#//api/name/parameters"><code>parameters</code></a> dictionary.</p>
+	</div>
 	
 	
 	
@@ -381,6 +399,19 @@
 	
 	
 	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>The block must take two <a href="#//api/name/parameters">parameters</a>, an <code>NSData</code> and an <code>NSError</code>. If the
+download succeeds, the <code>NSData</code> parameter will be non-nil and will contain
+the response <a href="#//api/name/data">data</a> from the server. If the download fails, the <code>NSData</code>
+parameter will be nil, and the <code>NSError</code> parameter will be a non-nil instance
+and will describe the error that occurred. This callback will not be invoked
+if the download is manually cancelled.</p>
+
+<p>This block is required. You must provide it before invoking <a href="#//api/name/start"><code>start</code></a>,
+otherwise an exception will be raised when the download finishes.</p>
+	</div>
 	
 	
 	
@@ -439,7 +470,7 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>The request&rsquo;s HTTP request method.</p>
+		<p>The request&rsquo;s HTTP method.</p>
 	</div>		
 	
     
@@ -456,7 +487,7 @@
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<p>The default method is GET.</p>
+		<p>The default value is DLDownloadMethodGET.</p>
 	</div>
 	
 	
@@ -494,6 +525,16 @@
 	
 	
 	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>The handling of this property depends on the download <a href="#//api/name/method">method</a>. For example, in
+both GET and POST calls, the parameters will be translated to a query string
+(with dictionary keys listed as query string field names, and dictionary
+values as query string field values). In a GET call, however, the query
+string will be appending to the URL, while in a POST call it&rsquo;ll be sent as
+the request&rsquo;s body <a href="#//api/name/data">data</a>.</p>
+	</div>
 	
 	
 	
@@ -533,7 +574,7 @@
 	
 	<div class="method-subsection discussion-section">
 		<h4 class="method-subtitle">Discussion</h4>
-		<p>The default timeout is set to 10 seconds.</p>
+		<p>The default value is 10 seconds.</p>
 	</div>
 	
 	
@@ -557,7 +598,7 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>  A block that is called when the progress of a download has updated.</p>
+		<p>A block that is called when the progress of a download has updated.</p>
 	</div>		
 	
     
@@ -571,6 +612,17 @@
 	
 	
 	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>The block must take three <a href="#//api/name/parameters">parameters</a>, two <code>NSUInteger</code>s and a <code>CGFloat</code>. The
+first <code>NSUInteger</code> will be the number of bytes that have been downloaded. The
+second will be the number of bytes that the download expects to receive. The
+<code>CGFloat</code> will be a percent value (0.0 &ndash; 1.0) corresponding to the percent of
+bytes downloaded.</p>
+
+<p>This block is optional.</p>
+	</div>
 	
 	
 	
@@ -608,6 +660,11 @@
 	
 	
 	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>This value must not be nil when <a href="#//api/name/start"><code>start</code></a> is called.</p>
+	</div>
+	
 	
 	
 	
@@ -639,7 +696,7 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Cancels the download for a given URL.</p>
+		<p>Cancels the download.</p>
 	</div>		
 	
     
@@ -653,6 +710,11 @@
 	
 	
 	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>A Cancelled download will not invoke its <a href="#//api/name/callback"><code>callback</code></a> block.</p>
+	</div>
 	
 	
 	
@@ -675,7 +737,7 @@
 	
 	
 	<div class="method-subsection brief-description">
-		<p>Starts the download for a given request.</p>
+		<p>Starts the download.</p>
 	</div>		
 	
     
@@ -691,6 +753,24 @@
 	
 	
 	
+	
+	<div class="method-subsection arguments-section exceptions">
+		<h4 class="method-subtitle exception-title">Exceptions</h4>
+		
+		<dl class="argument-def exception-def">
+			<dt><em>NSGenericException</em></dt>
+			<dd><p>if <code>start</code> has already been called on the
+receiver. DLDownload instances are not reusable; they should be executed once
+and then discarded.</p></dd>
+		</dl>
+		
+		<dl class="argument-def exception-def">
+			<dt><em>NSInvalidArgumentException</em></dt>
+			<dd><p>if the value of the <a href="#//api/name/url"><code>url</code></a> property is
+nil.</p></dd>
+		</dl>
+		
+	</div>
 	
 	
 	

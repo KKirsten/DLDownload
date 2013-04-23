@@ -36,7 +36,7 @@
                         
                         <h1><a href="Classes/DLDownload.html">DLDownload</a></h1>
 
-<p><a href="Classes/DLDownload.html">DLDownload</a> is a lightweight block based wrapper around NSURLConnection.</p>
+<p><a href="Classes/DLDownload.html">DLDownload</a> is a lightweight block-based wrapper around NSURLConnection.</p>
 
 <h2>Installation</h2>
 
@@ -48,7 +48,7 @@
 
 <h2>Documentation</h2>
 
-<p>Documentation for <a href="Classes/DLDownload.html">DLDownload</a> can be found on <a href="http://enderlabs.github.io/Download/">Github Pages</a>.</p>
+<p>Documentation for <a href="Classes/DLDownload.html">DLDownload</a> can be found on <a href="http://enderlabs.github.io/DLDownload/">Github Pages</a>.</p>
 
 <h2>Contributing</h2>
 
@@ -150,15 +150,19 @@ download.credential = [NSURLCredential credentialWithUser:@"username" password:@
 
 <h2>Notifications</h2>
 
+<p>Instances of <a href="Classes/DLDownload.html">DLDownload</a> post the notifications <code>DLDownloadDidBeginNotification</code> and <code>DLDownloadDidEndNotification</code> when they start and end. In general, you should use the block callbacks to track these events rather than these notifications. These notifications exist specifically to allow for simple application-level monitoring of all downloads. For example, in an iOS app, you could have a system running that tracks the number of active downloads by incrementing or decrementing an integer when these notifications fire, and shows or hides the iOS network activity indicator accordingly.</p>
+
+<p>No <code>userInfo</code> dictionary gets sent with these notifications.</p>
+
 <ul>
-<li><code>DLDownloadDidBeginNotification</code></li>
-<li><code>DLDownloadDidEndNotification</code></li>
+<li><code>DLDownloadDidBeginNotification</code> Posted whenever a download begins.</li>
+<li><code>DLDownloadDidEndNotification</code> Posted whenever a download ends. This includes if the download finishes normally, fails to download, times out, or is cancelled.</li>
 </ul>
 
 
 <h2>Notes</h2>
 
-<p>You do not need to encode parameters. All parameters are properly encoded by <a href="Classes/DLDownload.html">DLDownload</a> before the call is made.</p>
+<p>You do not need to URL-encode parameters. All parameters are properly encoded by <a href="Classes/DLDownload.html">DLDownload</a> before the call is made.</p>
                         
                         
                     </div>
@@ -193,7 +197,7 @@ download.credential = [NSURLCredential credentialWithUser:@"username" password:@
                     </div>
                 </div>
             </div>
-        </article>  
+        </article>      
         <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -203,6 +207,6 @@ download.credential = [NSURLCredential credentialWithUser:@"username" password:@
         ga('create', 'UA-18642970-10', 'github.io');
         ga('send', 'pageview');
 
-        </script>   
+        </script>  
     </body>
 </html>
