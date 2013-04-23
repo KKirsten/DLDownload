@@ -1,5 +1,5 @@
 # DLDownload
-DLDownload is a lightweight block based wrapper around NSURLConnection.
+DLDownload is a lightweight block-based wrapper around NSURLConnection.
 
 ## Installation
 * Add `pod "DLDownload"` to your [Podfile](http://cocoapods.org), import as necessary with: `#import "DLDownload.h"`.
@@ -105,8 +105,12 @@ HTTP methods supported include: `GET`, `POST`, `DELETE`, `PUT`, `PATCH`.
 
 
 ## Notifications
-* `DLDownloadDidBeginNotification`
-* `DLDownloadDidEndNotification`
+Instances of DLDownload post the notifications `DLDownloadDidBeginNotification` and `DLDownloadDidEndNotification` when they start and end. In general, you should use the block callbacks to track these events rather than these notifications. These notifications exist specifically to allow for simple application-level monitoring of all downloads. For example, in an iOS app, you could have a system running that tracks the number of active downloads by incrementing or decrementing an integer when these notifications fire, and shows or hides the iOS network activity indicator accordingly.
+
+No `userInfo` dictionary gets sent with these notifications.
+
+* `DLDownloadDidBeginNotification` Posted whenever a download begins.
+* `DLDownloadDidEndNotification` Posted whenever a download ends. This includes if the download finishes normally, fails to download, times out, or is cancelled.
 
 ## Notes
-You do not need to encode parameters. All parameters are properly encoded by DLDownload before the call is made.
+You do not need to URL-encode parameters. All parameters are properly encoded by DLDownload before the call is made.
