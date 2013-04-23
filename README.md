@@ -56,7 +56,7 @@ DLDownload *download = [[DLDownload alloc] init];
 download.method = DownloadMethodPOST;
 download.url = [NSURL URLWithString:@"http://imgsrc.hubblesite.org/hu/db/images/hs-2006-10-a-hires_jpg.jpg"];
 download.updateProgressCallback = ^(NSUInteger bytesReceived, NSUInteger expectedLength, CGFloat percent) {
-    NSLog(@"%i%% Complete", (int)(percent * 100);
+    NSLog(@"%i%% Complete", (int)(percent * 100));
 };
 download.callback =  ^(NSData *data, NSError *error) {
     if(error) {
@@ -99,7 +99,7 @@ download.bodyData = [NSJSONSerialization dataWithJSONObject:@{@"text":@"Message 
 
 ```objc
 DLDownload *download = [[DLDownload alloc] init];
-download.challengeCredential = [[NSURLCredential alloc] initWithUser:@"username" password:@"password" objectForKey:@"CloudAppPassword"] persistence:NSURLCredentialPersistenceNone];
+download.credential = [NSURLCredential credentialWithUser:@"username" password:@"password" persistence:NSURLCredentialPersistenceForSession];
 
 // define properties and methods here.
 
