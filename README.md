@@ -37,7 +37,7 @@ Please feel free to [fork the code](http://github.com/enderlabs/DLDownload.git),
 HTTP methods supported include: `GET`, `POST`, `DELETE`, `PUT`, `PATCH`.
 
     DLDownload *download = [[DLDownload alloc] init];
-    download.method = DownloadMethodPOST;
+    download.method = DLDownloadMethodPOST;
     download.url = [NSURL URLWithString:@"http://track8.fm/api/track"];
     download.parameters = @{@"artist":@"Finch", @"track":@"Ender"};
     download.callback =  ^(NSData *data, NSError *error) {
@@ -56,7 +56,7 @@ HTTP methods supported include: `GET`, `POST`, `DELETE`, `PUT`, `PATCH`.
 ### Monitor Download Progress
 
     DLDownload *download = [[DLDownload alloc] init];
-    download.method = DownloadMethodPOST;
+    download.method = DLDownloadMethodPOST;
     download.url = [NSURL URLWithString:@"http://imgsrc.hubblesite.org/hu/db/images/hs-2006-10-a-hires_jpg.jpg"];
     download.updateProgressCallback = ^(NSUInteger bytesReceived, NSUInteger expectedLength, CGFloat percent) {
         NSLog(@"%i%% Complete", (int)(percent * 100));
@@ -105,8 +105,8 @@ HTTP methods supported include: `GET`, `POST`, `DELETE`, `PUT`, `PATCH`.
 
 
 ## Notifications
-* `DownloadDidBeginNotification`
-* `DownloadDidEndNotification`
+* `DLDownloadDidBeginNotification`
+* `DLDownloadDidEndNotification`
 
 ## Notes
 You do not need to encode parameters. All parameters are properly encoded by DLDownload before the call is made.
